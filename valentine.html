@@ -5,20 +5,20 @@
 <title>Be My Valentine 💖</title>
 <style>
   body {
-        margin: 0;
-        height: 100vh;
-        font-family: "Comic Sans MS", cursive;
-        background-image: url('pattern.jpg'); /* your repeating pattern image */
-        background-repeat: repeat;            /* repeat both horizontally & vertically */
-        background-position: top left;        /* start from top-left corner */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        }
+    margin: 0;
+    height: 100vh;
+    font-family: "Comic Sans MS", cursive;
+    background-image: url('pattern.jpg'); /* your repeating pattern image */
+    background-repeat: repeat;
+    background-position: top left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
 
   .card {
-    background: white;
+    background: rgba(255,255,255,0.9);
     width: 450px;
     padding: 30px;
     border-radius: 25px;
@@ -33,8 +33,11 @@
   }
 
   .buttons { 
-    margin-top: 25px; 
-    position: relative; 
+    display: flex;
+    justify-content: center;   /* YES & NO side by side */
+    gap: 20px;
+    margin-top: 25px;
+    position: relative;
     height: 100px; 
   }
 
@@ -45,6 +48,7 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative; /* allow movement */
   }
 
   #yesBtn {
@@ -56,7 +60,7 @@
 
   #noBtn {
     background: #eee;
-    position: absolute;
+    color: black;
   }
 
   .hidden { display: none; }
@@ -106,32 +110,33 @@
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const card = document.getElementById("questionCard");
-const questionText = document.getElementById("questionText");
 
-// initial text size
-// let fontSize = 28;
+// initial font sizes
 let noFontSize = 18;
 let yesFontSize = 18;
 
-// Move NO button + shrink + enlarge YES + grow question text
+// Move NO button + shrink NO + enlarge YES
 function moveNoBtn() {
-  const cardRect = document.querySelector(".card").getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+
+  // random position within card
   const x = Math.random() * (cardRect.width - noBtn.offsetWidth);
   const y = Math.random() * (cardRect.height - noBtn.offsetHeight);
 
+  noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 
-  // Shrink NO button font
+  // shrink NO button font
   if (noFontSize > 8) noFontSize -= 1;
   noBtn.style.fontSize = noFontSize + "px";
 
-  // Enlarge YES button font
+  // enlarge YES button font
   yesFontSize += 1;
   yesBtn.style.fontSize = yesFontSize + "px";
 }
 
-// YES button clicked -> show confetti + final card
+// YES clicked -> show confetti + final card
 function sayYes() {
   fireConfetti();
   setTimeout(() => {
@@ -153,12 +158,14 @@ function fireConfetti() {
   }
 }
 
-// events
+// NO button events
 noBtn.addEventListener("mouseover", moveNoBtn);
-noBtn.addEventListener("click", moveNoBtn); // for mobile
+noBtn.addEventListener("click", moveNoBtn); // mobile support
 
-// initial positions
-moveNoBtn();
+// initial position (beside YES)
+noBtn.style.position = "relative";
+noBtn.style.left = "0px";
+noBtn.style.top = "0px";
 </script>
 
 </body>
