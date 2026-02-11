@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login to My Heart 💖</title>
+
+  <style>
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Comic Sans MS", cursive;
+        background-image: url('pattern.jpg'); /* your repeating pattern image */
+        background-repeat: repeat;            /* repeat both horizontally & vertically */
+        background-position: top left;        /* start from top-left corner */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        }
+
+
+    .card {
+      background: white;
+      width: 380px;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    img {
+      width: 150px;
+      margin-bottom: 15px;
+    }
+
+    input, button {
+      width: 90%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff5e78;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ff3b5c;
+    }
+
+    .option {
+      background: #ffe1e7;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .question {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .msg {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- CHARACTER IMAGE -->
+  <!-- Replace src with any funny/cute character later -->
+  <img id="mainPic" src="unsure.jpeg" alt="Funny Character">
+
+  <!-- QUESTION 1 -->
+  <div id="q1">
+    <p class="question">💍 Are you my wife?<br>What’s your name heh heh you imposter?</p>
+    <input type="text" id="wifeName" placeholder="Enter your name 🤨">
+    <button onclick="goToQ2()">Next</button>
+    <p class="msg" id="msg1"></p>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div id="q2" class="hidden">
+    <p class="question">🎂 What’s my birthday?</p>
+  
+    <label for="month">Month:</label>
+    <select id="month">
+      <option value="">--Select--</option>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</option>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+  
+    <label for="day">Day:</label>
+    <input type="number" id="day" placeholder="Day" min="1" max="31">
+  
+    <button onclick="goToQ3()">Next</button>
+    <p class="msg" id="msg2"></p>
+  </div>
+  
+
+  <!-- QUESTION 3 -->
+  <div id="q3" class="hidden">
+    <p class="question">😎 How handsome is your husband?</p>
+
+    <button class="option" onclick="wrong()">Good Looking</button>
+    <button class="option" onclick="wrong()">Very Handsome</button>
+    <button class="option" onclick="wrong()">Extremely Handsome 😍🔥</button>
+    <button class="option" onclick="correct()">Illegal Levels of Handsome 🚨</button>
+
+    <p class="msg" id="msg3"></p>
+  </div>
+
+ <!-- Continue Button appears after correct answer -->
+ <button id="continueBtn" class="hidden" onclick="continueToNext()">➡️ Continue</button>
+</div>
+
+<script>
+  sessionStorage.removeItem("loggedIn");
+
+  function login() {
+    document.getElementById("mainPic").src = "unsure.jpeg";
+    sessionStorage.setItem("loggedIn", "true");
+  }
+
+  function goToQ2() {
+    document.getElementById("mainPic").src = "unsure.jpeg";
+    const name = document.getElementById("wifeName").value.trim();
+    const msg = document.getElementById("msg1");
+
+    if (!name || name.toLowerCase() !== "rubina karki poudel") {
+      document.getElementById("mainPic").src = "sad.jpeg";
+      msg.innerText = "❌ IMPOSTER 😱😱😱. Enter your NAMEEEEEEE 😭😭😭😭";
+      return;
+    }
+
+    document.getElementById("q1").classList.add("hidden");
+    document.getElementById("q2").classList.remove("hidden");
+  }
+
+  function goToQ3() {
+    document.getElementById("mainPic").src = "unsure.jpeg";
+  const monthInput = parseInt(document.getElementById("month").value);
+  const dayInput = parseInt(document.getElementById("day").value);
+  const msg = document.getElementById("msg2");
+
+  const correctMonth = 12; // replace with your birthday month
+  const correctDay = 18;  // replace with your birthday day
+
+  if (!monthInput || !dayInput) {
+    msg.innerText = "❌ Please select month and enter day!";
+    return;
+  }
+
+  if (monthInput === correctMonth && dayInput === correctDay) {
+    // proceed to next question
+    document.getElementById("q2").classList.add("hidden");
+    document.getElementById("q3").classList.remove("hidden");
+    msg.innerText = "";
+  } else {
+    document.getElementById("mainPic").src = "sad.jpeg";
+    msg.innerText = "❌ Come on… I know your birthday 😏";
+  }
+}
+
+  function wrong() {
+    document.getElementById("mainPic").src = "sad.jpeg";
+    document.getElementById("msg3").innerText =
+      "❌ Incorrect. Please rethink your life choices 😂";
+  }
+
+  function correct() {
+    document.getElementById("mainPic").src = "happy.jpeg";
+    document.getElementById("msg3").innerText = "✅ Amamama my beautiful and talented wife! You may now proceed to Valentine mode 💖💖";
+    sessionStorage.setItem("loggedIn", "true");
+    document.getElementById("continueBtn").classList.remove("hidden");
+  }
+
+  function continueToNext() {
+    // Proceed to Would You Rather page
+    window.location.href = "would-you-rather.html";
+  }
+</script>
+
+</body>
+</html>

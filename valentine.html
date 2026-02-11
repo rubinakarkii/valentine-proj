@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<style>
+  body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Comic Sans MS", cursive;
+        background-image: url('pattern.jpg'); /* your repeating pattern image */
+        background-repeat: repeat;            /* repeat both horizontally & vertically */
+        background-position: top left;        /* start from top-left corner */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        }
+
+  .card {
+    background: white;
+    width: 450px;
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    position: relative;
+  }
+
+  h2 { 
+    margin-bottom: 20px;
+    transition: font-size 0.3s ease;
+  }
+
+  .buttons { 
+    margin-top: 25px; 
+    position: relative; 
+    height: 100px; 
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #yesBtn {
+    background: #ff5e78;
+    color: white;
+  }
+
+  #yesBtn:hover { background: #ff3b5c; }
+
+  #noBtn {
+    background: #eee;
+    position: absolute;
+  }
+
+  .hidden { display: none; }
+
+  .heart { font-size: 50px; animation: beat 1s infinite; }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* Confetti styles */
+  .confetti {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fce18a;
+    top: 0;
+    animation: fall 4s linear forwards;
+    z-index: 1000;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card" id="questionCard">
+  <h2 id="questionText">💖 Finally the real question!!! DHUN DHUN DHUN!!! Will you be my Valentine?</h2>
+  <div class="buttons">
+    <button id="yesBtn" onclick="sayYes()">YES 💘</button>
+    <button id="noBtn">NO 😜</button>
+  </div>
+</div>
+
+<div class="card hidden" id="finalCard">
+  <div class="heart">❤️</div>
+  <h2>YAYYYYY!!!</h2>
+  <p>You are officially my Valentine 💕</p>
+  <p>Forever. No returns. No refunds 😘</p>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const card = document.getElementById("questionCard");
+const questionText = document.getElementById("questionText");
+
+// initial text size
+// let fontSize = 28;
+let noFontSize = 18;
+let yesFontSize = 18;
+
+// Move NO button + shrink + enlarge YES + grow question text
+function moveNoBtn() {
+  const cardRect = document.querySelector(".card").getBoundingClientRect();
+  const x = Math.random() * (cardRect.width - noBtn.offsetWidth);
+  const y = Math.random() * (cardRect.height - noBtn.offsetHeight);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  // Shrink NO button font
+  if (noFontSize > 8) noFontSize -= 1;
+  noBtn.style.fontSize = noFontSize + "px";
+
+  // Enlarge YES button font
+  yesFontSize += 1;
+  yesBtn.style.fontSize = yesFontSize + "px";
+}
+
+// YES button clicked -> show confetti + final card
+function sayYes() {
+  fireConfetti();
+  setTimeout(() => {
+    document.getElementById("questionCard").classList.add("hidden");
+    document.getElementById("finalCard").classList.remove("hidden");
+  }, 500);
+}
+
+// Confetti generator
+function fireConfetti() {
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 70%)`;
+    confetti.style.left = Math.random() * window.innerWidth + "px";
+    confetti.style.animationDuration = 1 + Math.random()*2 + "s";
+    document.body.appendChild(confetti);
+    confetti.addEventListener("animationend", () => { confetti.remove(); });
+  }
+}
+
+// events
+noBtn.addEventListener("mouseover", moveNoBtn);
+noBtn.addEventListener("click", moveNoBtn); // for mobile
+
+// initial positions
+moveNoBtn();
+</script>
+
+</body>
+</html>

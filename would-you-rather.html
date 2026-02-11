@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome!! Let's start with Would You Rather 💘💘💘</title>
+
+  <style>
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Comic Sans MS", cursive;
+        background-image: url('pattern.jpg'); /* your repeating pattern image */
+        background-repeat: repeat;            /* repeat both horizontally & vertically */
+        background-position: top left;        /* start from top-left corner */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        }
+
+    .card {
+      background: white;
+      width: 440px;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .option {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: #ffe1e7;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background: #ffb3c1;
+    }
+
+    .option:disabled {
+      background: #f0f0f0;
+      cursor: not-allowed;
+    }
+
+    .next-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: none;
+      background: #ff5e78;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* MESSAGE WITH IMAGE */
+    .message-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    .message-box img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .msg {
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>💘 Would You Rather</h2>
+  <p id="questionText"></p>
+
+  <button class="option" id="optA" onclick="answer(0)">Option A</button>
+  <button class="option" id="optB" onclick="answer(1)">Option B</button>
+
+  <!-- MESSAGE + IMAGE -->
+  <div class="message-box hidden" id="messageBox">
+    <!-- Replace this image later with your funny character -->
+    <img id="reactionImg" src="unsure.jpeg">
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <button class="next-btn hidden" id="nextBtn" onclick="next()">➡️ Next</button>
+</div>
+
+<script>
+
+    // Redirect to login if not logged in
+    if (sessionStorage.getItem("loggedIn") !== "true") {
+        window.location.href = "index.html";
+    }
+
+  const questions = [
+    {
+      text: "😴 Have me snore every night OR 💨️ hear me fart every night?",
+      messages: [
+        "True love means surviving the snores 😴❤️",
+        "Hehe I'd love to hear your cute farts 💨️💨️😄"
+      ],
+    images: [
+      "happy.jpeg",  // image for option A
+      "happy.jpeg"    // image for option B
+    ]
+    },
+    {
+      text: "Stay forever in a mailay raitalo banako room OR 😏 Send me your super sexy pic in a super short dress? 🥵🥵",
+      messages: [
+        "noooooooo sexy pics pleaseeeee... 🥵🥵🥵🥵🥵🥵",
+        "may ko kab se hu ready taiyar 🥵🥵🥵🥵🥵🥵"
+      ],
+    images: [
+      "sad.jpeg",  // image for option A
+      "happy.jpeg"    // image for option B
+    ]
+    },
+    {
+      text: "❤️ Be stuck with me forever OR ❤️❤️ be stuck with me forever with extra hugs?",
+      messages: [
+        "Lifetime subscription activated 😌",
+        "Unlimited cuddles unlocked 🥰"
+      ],
+    images: [
+      "happy.jpeg",  // image for option A
+      "happy.jpeg"    // image for option B
+    ]
+    }
+  ];
+
+  let index = 0;
+
+  const questionText = document.getElementById("questionText");
+  const msg = document.getElementById("msg");
+  const messageBox = document.getElementById("messageBox");
+  const nextBtn = document.getElementById("nextBtn");
+  const optA = document.getElementById("optA");
+  const optB = document.getElementById("optB");
+
+  function loadQuestion() {
+    questionText.innerText = questions[index].text;
+    msg.innerText = "";
+    messageBox.classList.add("hidden");
+    nextBtn.classList.add("hidden");
+    optA.disabled = false;
+    optB.disabled = false;
+  }
+
+  function answer(choice) {
+    msg.innerText = questions[index].messages[choice];
+    messageBox.classList.remove("hidden");
+    optA.disabled = true;
+    optB.disabled = true;
+    nextBtn.classList.remove("hidden");
+
+    // OPTIONAL: change image per choice later if you want
+    document.getElementById("reactionImg").src = questions[index].images[choice];
+  }
+
+  function next() {
+    document.getElementById("reactionImg").src = "unsure.jpeg";
+    index++;
+    if (index < questions.length) {
+      loadQuestion();
+    } else {
+      window.location.href = "valentine.html";
+    }
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
